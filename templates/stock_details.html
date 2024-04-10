@@ -90,6 +90,24 @@
             font-weight: bold;
             margin-right: 10px;
         }
+
+        .back-button {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .back-button button {
+            padding: 10px 20px;
+            background-color: #0066cc;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .back-button button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 
@@ -137,6 +155,10 @@
                 <td id="predicted-prices"></td>
             </tr>
         </table>
+
+        <div class="back-button">
+            <button onclick="goBack()">Back</button>
+        </div>
     </div>
 
     <script>
@@ -174,17 +196,22 @@
                     // Display the predicted price range
                     document.getElementById('predicted-prices').textContent = priceRange;
                 })
-                .catch(error => console.error('Error fetching stock details:',error));
+                .catch(error => console.error('Error fetching stock details:', error));
         }
 
         // Event listener for when the symbol selection changes
-        document.getElementById('symbol-select').addEventListener('change',function (event) {
+        document.getElementById('symbol-select').addEventListener('change', function (event) {
             const selectedSymbol = event.target.value;
             fetchStockDetails(selectedSymbol);
         });
 
         // Fetch initial stock details for the default symbol (AAPL)
         fetchStockDetails('AAPL');
+
+        // Function to go back to the previous page
+        function goBack() {
+            window.history.back();
+        }
     </script>
 </body>
 
