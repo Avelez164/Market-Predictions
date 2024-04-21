@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Details</title>
+    <style>
+        body {
+            background-color: #000000;
+            color: #fff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: #333;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #4af;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #555;
+        }
+
+        th {
+            background-color: #444;
+        }
+
+        .label {
+            font-weight: bold;
+            color: #4af;
+        }
+
+        .back-button {
+            margin-top: 20px;
+            width: 100%;
+            padding: 10px;
+            background-color: #4af;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .back-button:hover {
+            background-color: #3783b3;
+        }
+
+        .positive {
+            color: green;
+        }
+
+        .negative {
+            color: red;
+        }
+
+        .stock-link {
+            color: #fff;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Stock Details</h1>
+        <table>
+            <tr>
+                <th class="label">Symbol</th>
+                <th class="label">Current Price</th>
+                <th class="label">24h % Change</th>
+                <th class="label">Market Cap</th>
+            </tr>
+            <tr>
+                <td><a href="https://finance.yahoo.com/quote/AAPL/" id="symbol-AAPL" class="stock-link"
+                        target="_blank">AAPL</a></td>
+                <td id="current-price-AAPL">Loading...</td>
+                <td id="percent-change-AAPL">Loading...</td>
+                <td id="market-cap-AAPL">Loading...</td>
+            </tr>
+            <tr>
+                <td><a href="https://finance.yahoo.com/quote/GOOG/" id="symbol-GOOG" class="stock-link"
+                        target="_blank">GOOG</a></td>
+                <td id="current-price-GOOG">Loading...</td>
+                <td id="percent-change-GOOG">Loading...</td>
+                <td id="market-cap-GOOG">Loading...</td>
+            </tr>
+            <tr>
+                <td><a href="https://finance.yahoo.com/quote/MSFT/" id="symbol-MSFT" class="stock-link"
+                        target="_blank">MSFT</a></td>
+                <td id="current-price-MSFT">Loading...</td>
+                <td id="percent-change-MSFT">Loading...</td>
+                <td id="market-cap-MSFT">Loading...</td>
+            </tr>
+            <tr>
+                <td><a href="https://finance.yahoo.com/quote/NVDA/" id="symbol-NVDA" class="stock-link"
+                        target="_blank">NVDA</a></td>
+                <td id="current-price-NVDA">Loading...</td>
+                <td id="percent-change-NVDA">Loading...</td>
+                <td id="market-cap-NVDA">Loading...</td>
+            </tr>
+            <tr>
+                <td><a href="https://finance.yahoo.com/quote/AMZN/" id="symbol-AMZN" class="stock-link"
+                        target="_blank">AMZN</a></td>
+                <td id="current-price-AMZN">Loading...</td>
+                <td id="percent-change-AMZN">Loading...</td>
+                <td id="market-cap-AMZN">Loading...</td>
+            </tr>
+            <tr>
+                <td><a href="https://finance.yahoo.com/quote/INTC/" id="symbol-INTC" class="stock-link"
+                        target="_blank">INTC</a></td>
+                <td id="current-price-INTC">Loading...</td>
+                <td id="percent-change-INTC">Loading...</td>
+                <td id="market-cap-INTC">Loading...</td>
+            </tr>
+            <tr>
+                <td><a href="https://finance.yahoo.com/quote/TSLA/" id="symbol-TSLA" class="stock-link"
+                        target="_blank">TSLA</a></td>
+                <td id="current-price-TSLA">Loading...</td>
+                <td id="percent-change-TSLA">Loading...</td>
+                <td id="market-cap-TSLA">Loading...</td>
+            </tr>
+            <tr>
+                <td><a href="https://finance.yahoo.com/quote/XOM/" id="symbol-XOM" class="stock-link"
+                        target="_blank">XOM</a></td>
+                <td id="current-price-XOM">Loading...</td>
+                <td id="percent-change-XOM">Loading...</td>
+                <td id="market-cap-XOM">Loading...</td>
+            </tr>
+
+        </table>
+        <button class="back-button" onclick="goBack()">Back</button>
+    </div>
+
+    <script>
+        // Function to fetch stock details
+        async function fetchStockDetails(symbol) {
+            const response = await fetch(`/api/stock_details?symbol=${symbol}`);
+            if (response.ok) {
+                return response.json();
+            } else {
+                // Retry after 1 second if response is not ok
+                await new Promise(resolve => setTimeout(resolve,1000));
+                return fetchStockDetails(symbol);
+            }
+        }
+
+        // Function to update stock details in the table
+        async function updateStockDetails(symbol) {
+            const data = await fetchStockDetails(symbol);
+            if (data.error) {
+                // If error, update table with 'Refreshing...'
+                document.getElementById(`current-price-${symbol}`).textContent = 'Refreshing...';
+                document.getElementById(`percent-change-${symbol}`).textContent = 'Refreshing...';
+                document.getElementById(`market-cap-${symbol}`).textContent = 'Refreshing...';
+                // Retry after 1 second
+                await new Promise(resolve => setTimeout(resolve,1000));
+                // Update again
+                await updateStockDetails(symbol);
+            } else {
+                document.getElementById(`current-price-${symbol}`).textContent = '$' + data.current_price;
+                document.getElementById(`percent-change-${symbol}`).textContent = data.percent.toFixed(2) + '%';
+                document.getElementById(`market-cap-${symbol}`).textContent = simplifyMarketCap(data.market_cap);
+                const percentChangeElem = document.getElementById(`percent-change-${symbol}`);
+                if (data.percent >= 0) {
+                    percentChangeElem.classList.add('positive');
+                    percentChangeElem.classList.remove('negative');
+                } else {
+                    percentChangeElem.classList.add('negative');
+                    percentChangeElem.classList.remove('positive');
+                }
+            }
+        }
+
+        // Function to simplify market cap numbers
+        function simplifyMarketCap(marketCap) {
+            if (marketCap >= 1e12) {
+                return (marketCap / 1e12).toFixed(2) + 'T';
+            }
+            if (marketCap >= 1e9) {
+                return (marketCap / 1e9).toFixed(2) + 'B';
+            }
+            if (marketCap >= 1e6) {
+                return (marketCap / 1e6).toFixed(2) + 'M';
+            }
+            if (marketCap >= 1e3) {
+                return (marketCap / 1e3).toFixed(2) + 'K';
+            }
+            return marketCap.toString();
+        }
+
+        // Function to fetch stock details for all symbols
+        async function fetchAllStockDetails() {
+            const symbols = ['AAPL','GOOG','MSFT','NVDA','AMZN','INTC','TSLA','XOM'];
+            await Promise.all(symbols.map(symbol => updateStockDetails(symbol)));
+        }
+
+        // Fetch initial stock details for all symbols
+        fetchAllStockDetails();
+
+        // Function to navigate back
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+</body>
+
+</html>

@@ -25,6 +25,24 @@ class Stock():
   def stockCount(self):
     return yahoo.Ticker(self.stock).info.get('sharesOutstanding', 'N/A')
 
+  def percentage(self):
+        try:
+            # Retrieve historical data for the past day
+            current_date = datetime.now().strftime('%Y-%m-%d')
+            one_day_prior = (datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d')
+
+            historical_data = yahoo.download(self.stock, start=one_day_prior, end=current_date)
+
+            # Calculate percentage change
+            if not historical_data.empty:
+                previous_close = historical_data.iloc[0]['Close']
+                current_close = self.currentPrice()
+                percentage_change = ((current_close - previous_close) / previous_close) * 100
+                return percentage_change
+            else:
+                return "No historical data available for calculating percentage change"
+        except Exception as e:
+            return f"Error occurred: {e}"
   # Returns Market Cap
   def marketCap(self):
     try:
@@ -49,4 +67,3 @@ class Stock():
                                      end=current_date)
 
     return historical_data
-

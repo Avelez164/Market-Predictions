@@ -7,10 +7,10 @@
     <title>Stock Details</title>
     <style>
         body {
-            background-color: #f5f5f5;
-            /* Light gray background */
-            color: #333;
-            /* Dark font color */
+            background-color: #000000;
+            /* Dark background */
+            color: #fff;
+            /* Light font color */
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             /* Font family */
             margin: 0;
@@ -20,8 +20,8 @@
         .container {
             max-width: 800px;
             margin: 0 auto;
-            background-color: #fff;
-            /* White background */
+            background-color: #333;
+            /* Dark container background */
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             padding: 30px;
@@ -29,8 +29,8 @@
 
         h1 {
             text-align: center;
-            color: #0066cc;
-            /* Dark blue heading color */
+            color: #4af;
+            /* Cyan heading color */
             margin-bottom: 20px;
         }
 
@@ -44,51 +44,58 @@
         td {
             padding: 10px;
             text-align: left;
-            border-bottom: 1px solid #ddd;
+            border-bottom: 1px solid #555;
             /* Light gray border */
         }
 
         th {
-            background-color: #f2f2f2;
-            /* Light gray background for table headers */
+            background-color: #444;
+            /* Dark gray background for table headers */
         }
 
         .label {
             font-weight: bold;
-            color: #0066cc;
-            /* Dark blue label color */
+            color: #4af;
+            /* Cyan label color */
         }
 
-        #predicted-prices {
-            font-weight: bold;
-            color: #009933;
-            /* Green predicted prices color */
-        }
-
-        .select-container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-
-        .select-container select {
+        .predict-button {
+            margin-top: 20px;
+            width: 100%;
             padding: 10px;
+            background-color: #4af;
+            /* Cyan button color */
+            color: #fff;
+            /* White font color */
+            border: none;
             border-radius: 5px;
-            border: 1px solid #ccc;
-            /* Light gray border */
-            background-color: #f9f9f9;
-            /* Light gray background */
-            color: #333;
-            /* Dark font color */
-            font-size: 16px;
-            box-sizing: border-box;
-            width: 200px;
+            cursor: pointer;
+            transition: background-color 0.3s;
         }
 
-        .select-container label {
-            font-weight: bold;
-            margin-right: 10px;
+        .predict-button:hover {
+            background-color: #3783b3;
+            /* Darker cyan on hover */
+        }
+
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #4af;
+            /* Cyan button color */
+            color: #fff;
+            /* White font color */
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .back-button:hover {
+            background-color: #3783b3;
+            /* Darker cyan on hover */
         }
     </style>
 </head>
@@ -106,9 +113,7 @@
                 <option value="AMZN">AMZN</option>
                 <option value="INTC">INTC</option>
                 <option value="TSLA">TSLA</option>
-                <option value="TSM">TSM</option>
                 <option value="XOM">XOM</option>
-                <option value="ORCL">ORCL</option>
             </select>
         </div>
         <table>
@@ -132,11 +137,14 @@
                 <td class="label">Market Cap</td>
                 <td id="market-cap"></td>
             </tr>
-            <tr>
+            <tr id="predicted-prices-row" style="display: none;">
                 <td class="label">Predicted Prices (2d)</td>
                 <td id="predicted-prices"></td>
             </tr>
         </table>
+        <button class="predict-button" onclick="predictStockPrices()">Predict Stock Prices!</button>
+        <div class="back-button" onclick="goBack()">Back</div>
+
     </div>
 
     <script>
@@ -156,12 +164,15 @@
 
         // Function to fetch stock details based on selected symbol
         function fetchStockDetails(symbol) {
-            fetch(`/stock_details?symbol=${symbol}`)
+            // Hide the predicted prices row
+            document.getElementById('predicted-prices-row').style.display = 'none';
+
+            fetch(`/api/stock_details?symbol=${symbol}`)
                 .then(response => response.json())
                 .then(data => {
                     // Update HTML with stock details
                     document.getElementById('symbol').textContent = data.symbol;
-                    document.getElementById('current-price').textContent = data.current_price;
+                    document.getElementById('current-price').textContent = '$' + data.current_price;
                     document.getElementById('stock-count').textContent = simplifyNumber(data.stock_count);
                     document.getElementById('market-cap').textContent = simplifyNumber(data.market_cap);
 
@@ -183,8 +194,17 @@
             fetchStockDetails(selectedSymbol);
         });
 
+        // Function to predict stock prices
+        function predictStockPrices() {
+            // Add your prediction logic here
+            document.getElementById('predicted-prices-row').style.display = 'table-row';
+        }
+
         // Fetch initial stock details for the default symbol (AAPL)
         fetchStockDetails('AAPL');
+        function goBack() {
+            window.history.back();
+        }
     </script>
 </body>
 

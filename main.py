@@ -6,9 +6,18 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
+    return render_template("index.html")
+
+@app.route("/stock_details")
+def stock_details():
+    # Any additional logic before rendering the stock_details.html
     return render_template("stock_details.html")
 
-@app.route('/stock_details', methods=['GET'])
+@app.route("/stock_view")
+def stock_view():
+    return render_template("stock_view.html")
+
+@app.route('/api/stock_details', methods=['GET'])
 def get_stock_details():
     stock_symbol = request.args.get('symbol')
     days_to_predict = int(request.args.get('days', 2))  # Default to 2 days if days param not provided
@@ -24,13 +33,15 @@ def get_stock_details():
     stock_count = stock.stockCount()
     current_price = stock.currentPrice()
     market_cap = stock.marketCap()
+    percent = stock.percentage()
     return jsonify({
         'symbol': stock_symbol,
         'predicted_prices': predicted_prices,
         'days_predicted': days_to_predict,
         'stock_count': stock_count,
         'current_price' : current_price,
-        'market_cap' : market_cap
+        'market_cap' : market_cap,
+        'percent': percent
     })
 
 

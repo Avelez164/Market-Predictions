@@ -6,13 +6,13 @@
  * adds event on element
  */
 
-const addEventOnElem = function (elem, type, callback) {
+const addEventOnElem = function (elem,type,callback) {
   if (elem.length > 1) {
     for (let i = 0; i < elem.length; i++) {
-      elem[i].addEventListener(type, callback);
+      elem[i].addEventListener(type,callback);
     }
   } else {
-    elem.addEventListener(type, callback);
+    elem.addEventListener(type,callback);
   }
 }
 
@@ -32,7 +32,7 @@ const toggleNavbar = function () {
   document.body.classList.toggle("active");
 }
 
-addEventOnElem(navToggler, "click", toggleNavbar);
+addEventOnElem(navToggler,"click",toggleNavbar);
 
 const closeNavbar = function () {
   navbar.classList.remove("active");
@@ -40,7 +40,7 @@ const closeNavbar = function () {
   document.body.classList.remove("active");
 }
 
-addEventOnElem(navbarLinks, "click", closeNavbar);
+addEventOnElem(navbarLinks,"click",closeNavbar);
 
 
 
@@ -58,22 +58,7 @@ const activeHeader = function () {
   }
 }
 
-addEventOnElem(window, "scroll", activeHeader);
-
-
-
-/**
- * the toggle active on add to fav
- */
-
-const addToFavBtns = document.querySelectorAll("[data-add-to-fav]");
-
-const toggleActive = function () {
-  this.classList.toggle("active");
-}
-
-addEventOnElem(addToFavBtns, "click", toggleActive);
-
+addEventOnElem(window,"scroll",activeHeader);
 
 
 /**
@@ -94,4 +79,4 @@ const scrollReveal = function () {
 
 scrollReveal();
 
-addEventOnElem(window, "scroll", scrollReveal);
+addEventOnElem(window,"scroll",scrollReveal);
