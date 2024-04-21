@@ -11,6 +11,12 @@ Key Features:
 <p> 
   To predict stock prices according to real-time data values fetched from API.
 </p>
+
+## Contributors 
+<p>
+  - Michael Do
+  - Antonio Velez
+</p>
   
 ## Technology Used:
 - #### Languages:
