@@ -97,24 +97,6 @@
             background-color: #3783b3;
             /* Darker cyan on hover */
         }
-
-        .back-button {
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        .back-button button {
-            padding: 10px 20px;
-            background-color: #0066cc;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .back-button button:hover {
-            background-color: #0056b3;
-        }
     </style>
 </head>
 
@@ -160,16 +142,9 @@
                 <td id="predicted-prices"></td>
             </tr>
         </table>
-<<<<<<< HEAD
         <button class="predict-button" onclick="predictStockPrices()">Predict Stock Prices!</button>
         <div class="back-button" onclick="goBack()">Back</div>
 
-=======
-
-        <div class="back-button">
-            <button onclick="goBack()">Back</button>
-        </div>
->>>>>>> 5f28a239d64de9d058d9cc70716472eb3a862219
     </div>
 
     <script>
@@ -210,11 +185,11 @@
                     // Display the predicted price range
                     document.getElementById('predicted-prices').textContent = priceRange;
                 })
-                .catch(error => console.error('Error fetching stock details:', error));
+                .catch(error => console.error('Error fetching stock details:',error));
         }
 
         // Event listener for when the symbol selection changes
-        document.getElementById('symbol-select').addEventListener('change', function (event) {
+        document.getElementById('symbol-select').addEventListener('change',function (event) {
             const selectedSymbol = event.target.value;
             fetchStockDetails(selectedSymbol);
         });
@@ -227,11 +202,6 @@
 
         // Fetch initial stock details for the default symbol (AAPL)
         fetchStockDetails('AAPL');
-<<<<<<< HEAD
-=======
-
-        // Function to go back to the previous page
->>>>>>> 5f28a239d64de9d058d9cc70716472eb3a862219
         function goBack() {
             window.history.back();
         }
