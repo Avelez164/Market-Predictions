@@ -1,25 +1,17 @@
-import flask as fk
+from flask import Flask, request, render_template, jsonify
 import stock as sk
 import ML_Predictions as ml
 
-app = fk.Flask(__name__)
+app = Flask(__name__)
 
 @app.route("/")
 def index():
-<<<<<<< HEAD
     return render_template("index.html")
 
 @app.route("/stock_details")
 def stock_details():
     # Any additional logic before rendering the stock_details.html
     return render_template("stock_details.html")
-=======
-    return fk.render_template("index.html")
-
-@app.route("/stock")
-def stock():
-    return fk.render_template("stock_details.html")
->>>>>>> 5f28a239d64de9d058d9cc70716472eb3a862219
 
 @app.route("/stock_view")
 def stock_view():
@@ -27,10 +19,10 @@ def stock_view():
 
 @app.route('/api/stock_details', methods=['GET'])
 def get_stock_details():
-    stock_symbol = fk.request.args.get('symbol')
-    days_to_predict = int(fk.request.args.get('days', 2))  # Default to 2 days if days param not provided
+    stock_symbol = request.args.get('symbol')
+    days_to_predict = int(request.args.get('days', 2))  # Default to 2 days if days param not provided
     if not stock_symbol:
-        return fk.jsonify({'error': 'Stock symbol is required'}), 400
+        return jsonify({'error': 'Stock symbol is required'}), 400
     # No need to validate days_to_predict if it's restricted on the client side
     stock = sk.Stock(stock_symbol)
     historical_data = stock.historyCall()
@@ -41,12 +33,8 @@ def get_stock_details():
     stock_count = stock.stockCount()
     current_price = stock.currentPrice()
     market_cap = stock.marketCap()
-<<<<<<< HEAD
     percent = stock.percentage()
     return jsonify({
-=======
-    return fk.jsonify({
->>>>>>> 5f28a239d64de9d058d9cc70716472eb3a862219
         'symbol': stock_symbol,
         'predicted_prices': predicted_prices,
         'days_predicted': days_to_predict,
