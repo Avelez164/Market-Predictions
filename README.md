@@ -71,7 +71,8 @@ Key Features:
 
 **STEP 5:** Install the dependencies.
 ```bash
-  pip install yfinance --upgrade --no-cache-dir 
+  pip install yfinance --upgrade --no-cache-dir
+  pip install -U Flask 
 ```
 
 (For MacOS and Linux)
