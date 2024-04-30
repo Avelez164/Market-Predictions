@@ -71,7 +71,7 @@ Key Features:
 
 **STEP 5:** Install the dependencies.
 ```bash
-  pip install 
+  pip install yfinance --upgrade --no-cache-dir 
 ```
 
 (For MacOS and Linux)
