@@ -1,4 +1,4 @@
-# cpsc-362-project
+# Market Predictions Project
 
 Key Features:
 
